@@ -8,3 +8,4 @@ let _ =
    Format.printf "#include \"Hacl_HKDF_Blake2b_256.h\"\n");
   Cstubs.write_c Format.std_formatter ~prefix:""
     (module Hacl_HKDF_Blake2b_256_bindings.Bindings)
+  

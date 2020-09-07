@@ -6,3 +6,4 @@ let _ =
    Format.printf "#include \"Hacl_P256.h\"\n");
   Cstubs.write_c Format.std_formatter ~prefix:""
     (module Hacl_P256_bindings.Bindings)
+  
