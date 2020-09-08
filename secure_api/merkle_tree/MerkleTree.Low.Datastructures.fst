@@ -276,17 +276,17 @@ let hash_vec_r_alloc #_ hsz r =
   V.alloc_reserve 1ul (hash_dummy #hsz) r
 #pop-options
 
-val hash_vec_r_free:
+val hash_vec_r_free:  
   #hsz:Ghost.erased hash_size_t ->
-  v:hash_vec ->
+  v:hash_vec #hsz ->
   HST.ST unit
-    (requires (fun h0 -> hash_vec_r_inv h0 v))
+    (requires (fun h0 -> hash_vec_r_inv h0 v /\ rv_inv h0 v))
     (ensures (fun h0 _ h1 ->
       modifies (loc_all_regions_from false (hash_vec_region_of #hsz v)) h0 h1))
-let hash_vec_r_free #_ v =
-  // RV.free v
-  V.free v
-
+let hash_vec_r_free #hsz v = 
+  assume(Ghost.reveal hsz = 32ul);
+  RV.free #_ #_ #(hreg 32ul) v
+  
 /// This is nice because the only piece of state that we are keeping is one
 /// word, the hash size, since we are implementing a specialized instance of
 /// RVector over hashes of a known length. We could also, for genericity, make
